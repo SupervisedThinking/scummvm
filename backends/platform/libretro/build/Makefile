@@ -280,6 +280,18 @@ else ifneq (,$(findstring hardfloat,$(platform)))
 endif
    DEFINES += -DARM
 
+# Rockchip RK3399
+else ifneq (,$(findstring RK3399,$(platform)))
+   TARGET := $(TARGET_NAME)_libretro.so
+   DEFINES += -fPIC -Wno-multichar -D_ARM_ASSEM_
+   LDFLAGS += -shared -Wl,--version-script=../link.T -fPIC
+   USE_VORBIS = 0
+   USE_THEORADEC = 0
+   USE_TREMOR = 1
+   HAVE_MT32EMU = 1
+   HAVE_NEON = 1
+   DEFINES += -marm -mtune=cortex-a72.cortex-a53 -mfpu=neon -mfloat-abi=hard -DARM
+
 # Emscripten
 else ifeq ($(platform), emscripten)
 	TARGET := $(TARGET_NAME)_libretro_$(platform).bc
